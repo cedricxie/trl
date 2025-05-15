@@ -11,7 +11,9 @@ python --version
 echo "##############################"
 
 pip install -e .[dev]
-pip install wandb
+pip install wandb evaluate
+
+git config --global user.email "cedricxie@gmail.com"
+git config --global user.name "Yuesong.xie"
 
 huggingface-cli login
-# https://github.com/cedricxie/lerobot/blob/main/env.sh
