@@ -32,7 +32,7 @@ Fine-Tune Llama-7b on SE paired dataset
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model_path", type=str, default="")
+    parser.add_argument("--model_path", type=str, default="huggyllama/llama-7b")
     parser.add_argument("--dataset_name", type=str, default="lvwerra/stack-exchange-paired")
     parser.add_argument("--subset", type=str, default="data/finetune")
     parser.add_argument("--split", type=str, default="train")
@@ -107,7 +107,8 @@ def create_datasets(tokenizer, args):
         args.dataset_name,
         data_dir=args.subset,
         split=args.split,
-        use_auth_token=True,
+        # use_auth_token=True,
+        token=True,  # https://github.com/huggingface/datasets/issues/7504
         num_proc=args.num_workers if not args.streaming else None,
         streaming=args.streaming,
     )
@@ -192,7 +193,7 @@ def run_training(args, train_data, val_data):
         train_dataset=train_data,
         eval_dataset=val_data,
         peft_config=lora_config,
-        packing=True,
+        # packing=True,  # Moved to SFTConfig.
     )
 
     print_trainable_parameters(trainer.model)
